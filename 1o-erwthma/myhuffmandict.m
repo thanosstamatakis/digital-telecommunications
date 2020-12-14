@@ -1,5 +1,7 @@
 function [dict] = myhuffmandict(symbols, probabilities)
-    import classes.*;
+    addpath('classes');
+    addpath('helpers');
+
     % myhuffmandict - Emulate huffmandict matlab function
     % Syntax: dict = myhuffmandict(char({'a'},[1])
     % Author: Athanasios Iasonas Stamatakis 1041889
