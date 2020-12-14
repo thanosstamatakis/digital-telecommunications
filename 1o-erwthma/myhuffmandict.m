@@ -35,7 +35,7 @@ function [dict] = myhuffmandict(symbols, probabilities)
         q.push(f);
     end
 
-    % Traverse through the tree of nodes to 
+    % Traverse through the tree of nodes to
     % get the dictionary
     [dict] = traversal(root, [], {});
 end
