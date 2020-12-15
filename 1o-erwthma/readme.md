@@ -25,3 +25,10 @@
    % Check if signals match
    isequal(inputSig,cell2mat(sig))
    ```
+
+2. ### Για το δεύτερο ερώτημα μπορείτε απλά να τρέξετε το παρακάτω script:
+   ```matlab
+   % Run the second part of the first question
+   run('q2.m');
+   ```
+   ### το οποίο δίνει τα ζητούμενα της εκφώνησης απευθείας.

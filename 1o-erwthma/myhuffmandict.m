@@ -35,7 +35,7 @@ function [dict] = myhuffmandict(symbols, probabilities)
         y = q.head();
         q.pop();
 
-        f = myhuffmannode('-', (x.probability + y.probability), x, y);
+        f = myhuffmannode('APPENDED_NODE', (x.probability + y.probability), x, y);
         root = f;
         q.push(f);
     end
