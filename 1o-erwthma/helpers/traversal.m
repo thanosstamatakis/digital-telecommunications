@@ -5,8 +5,6 @@ function [res] = traversal(root, s, res)
 
     % If node is a leaf node return the result appended
     % to previous results
-    % if (isempty(root.left_node) && isempty(root.right_node) && isletter(root.character))
-
     if (isempty(root.left_node) && isempty(root.right_node) &&~strcmp(root.character, 'APPENDED_NODE'))
         res(end + 1, :) = {[root.character], s};
         return;

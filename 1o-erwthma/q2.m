@@ -6,7 +6,7 @@ probabilities = [0.08167, 0.01492, 0.02783, 0.04253, 0.12702, 0.02228, 0.02015, 
 dict = myhuffmandict(symbols, probabilities);
 
 % Create a random stream of characters based on probabilities (this is source A)
-indices = randsrc(10000,1,[1:numel(symbols); probabilities]);
+indices = randsrc(10000, 1, [1:numel(symbols); probabilities]);
 inputSig = [cell2mat(symbols(indices))];
 
 % Use huffman tree to encode the input signal
@@ -17,19 +17,19 @@ sig = myhuffmandeco(code, dict);
 
 % Check if signals match
 disp('Comparison between initial stream from source A and decoded stream:');
-isequal(inputSig,cell2mat(sig))
+isequal(inputSig, cell2mat(sig))
 disp('Code length for source A with probabilities from wikipedia is:');
 disp(length(code));
 
 % Initialize vars and open file
-file_id = fopen(fullfile('assets','kwords.txt'));
+file_id = fopen(fullfile('assets', 'kwords.txt'));
 next_line = fgetl(file_id);
 fileStream = '';
 
 % While there are lines read char[]
 % Remove unwanted characters from file with regex
 while ischar(next_line);
-    fileStream = [fileStream, lower(regexprep(next_line,'[^a-zA-Z]', ''))];
+    fileStream = [fileStream, lower(regexprep(next_line, '[^a-zA-Z]', ''))];
     next_line = fgetl(file_id);
 end
 
