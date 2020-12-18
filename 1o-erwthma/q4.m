@@ -30,6 +30,6 @@ sig = myhuffmandeco(code, dict);
 
 % Check if signals match
 disp('Comparison between initial stream from source A and decoded stream:');
-isequal(inputSig, cell2mat(sig))
+isequal(inputSig, sig)
 disp('Code length for source A with probabilities from wikipedia is:');
 disp(length(code));

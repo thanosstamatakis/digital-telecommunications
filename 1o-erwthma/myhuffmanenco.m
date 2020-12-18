@@ -4,19 +4,23 @@ function code = myhuffmanenco(src, dict)
     % Author: Athanasios Iasonas Stamatakis 1041889
     code = [];
 
-    for i = 1:length(src)
+    % Get symbols and codes from dict
+    symbols = dict(:, 1)';
+    codes = dict(:, 2)';
 
-        for j = 1:length(dict)
+    % Create a hash map from codes (converted to char arrays) to symbols
+    charcodemap = containers.Map(symbols, codes);
 
-            % if (src(i) == cell2mat(dict(j, 1)))
-            if ~iscell(src)
-                if isequal(src(i),cell2mat(dict(j, 1)))
-                    code = [code(1:end), cell2mat(dict(j, 2))];
-                end
-            else
-                if isequal(src(i),dict(j, 1))
-                    code = [code(1:end), cell2mat(dict(j, 2))];
-                end
+    if ~iscell(src)
+
+        for i = 1:length(src)
+            code = [code, charcodemap(src(i))];
+        end
+
+    else
+
+        for i = 1:length(src)
+            code = [code, charcodemap(cell2mat(src(i)))];
         end
 
     end
