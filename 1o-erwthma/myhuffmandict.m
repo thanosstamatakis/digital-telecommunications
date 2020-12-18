@@ -14,10 +14,10 @@ function [dict] = myhuffmandict(symbols, probabilities)
     q = myqueue();
     root = myhuffmannode();
 
-    % Input can be an array or a cell array
-    if isequal(class(symbols), 'cell')
-        symbols = cell2mat(symbols);
-    end
+    % % Input can be an array or a cell array
+    % if isequal(class(symbols), 'cell')
+    %     symbols = cell2mat(symbols);
+    % end
 
     % Initialize the nodes with their probabilities;
     for index = 1:length(symbols)

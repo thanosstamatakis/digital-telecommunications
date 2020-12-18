@@ -6,8 +6,13 @@ function [res] = traversal(root, s, res)
     % If node is a leaf node return the result appended
     % to previous results
     if (isempty(root.left_node) && isempty(root.right_node) &&~strcmp(root.character, 'APPENDED_NODE'))
-        res(end + 1, :) = {[root.character], s};
-        return;
+        if iscell(root.character)
+            res(end + 1, :) = {[cell2mat(root.character)], s};
+            return;
+        else
+            res(end + 1, :) = {[root.character], s};
+            return;
+        end
     end
 
     % If any node has children
