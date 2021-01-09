@@ -7,14 +7,7 @@ function [xq, centers, D] = mylloydmax(x, N, min_value, max_value)
 
     signal_length = length(x);
 
-    if (max_value > max(x))
-        max_value = max(x);
-    end
-
-    if (min_value < min(x))
-        min_value = min(x);
-    end
-
+    % Contain signal between min max values
     for i = 1:signal_length
 
         if (x(i) > max_value)
@@ -27,8 +20,7 @@ function [xq, centers, D] = mylloydmax(x, N, min_value, max_value)
 
     end
 
-    % Calculate the centers as if it was uniform PCM
-    % Number of levels.
+    % Initialize as uniform PCM
     levels = 2^N;
     level_length = (max_value - min_value) / levels;
     centers = zeros(levels, 1);
@@ -46,9 +38,12 @@ function [xq, centers, D] = mylloydmax(x, N, min_value, max_value)
     T = zeros(levels + 1, 1);
     T(1) = min_value;
     T(levels + 1) = max_value;
-    signalDistortion(1) = 1;
+
     % Initialize the quantization signal
     xq = zeros(length(x), 1);
+
+    % Supress for loop warning temporarily
+    warning('off', 'MATLAB:warn_truncate_for_loop_index');
 
     for k = 2:inf
         % Calculate quantization level limits for each iteration
@@ -64,19 +59,25 @@ function [xq, centers, D] = mylloydmax(x, N, min_value, max_value)
 
         % Calculate quantized signal for each iteration
         for i = 1:length(centers)
-            xq((x >= T(i) & x <= T(i + 1))) = centers(i);
+            xq((x >= T(i) & x <= T(i + 1))) = i;
         end
 
         % Calculate signal distortion and check if it's infinitesimal
-        D(k) = mean((x - xq).^2);
+        D(k) = mean((x - centers(xq)).^2);
 
-        if abs(D(k) - D(k - 1)) < eps
+        if abs(D(k) - D(k - 1)) < 1e-6
             break;
         end
 
     end
 
-    % Remove the first value of distortion that we added manually before beggining Lloyd - max
+    % Re-enable for loop warning
+    warning('on', 'MATLAB:warn_truncate_for_loop_index');
+
+    % Remove the arbitrary initial distortion value
     D = D(2:k);
+
+    % Log the number of iterations
+    disp(['Finished after ', num2str(length(D)), ' iterations.']);
 
 end
