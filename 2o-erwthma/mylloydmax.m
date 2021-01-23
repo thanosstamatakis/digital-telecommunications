@@ -1,11 +1,20 @@
-function [xq, centers, D] = mylloydmax(x, N, min_value, max_value)
+function [xq, centers, D, sqnr, sqnr_db] = mylloydmax(x, N, min_value, max_value)
     %mylloydmax - Description
     %
-    % Syntax: [xq,centers,D] = mylloydmax(x, N, min_value, max_value)
+    % Syntax: [xq,centers,D, sqnr, sqnr_db] = mylloydmax(x, N, min_value, max_value)
     %
     % Long description
 
     signal_length = length(x);
+
+    % If values exceeds max(x)/min(x) take it to max(x)/min(x) 
+    % if (max_value > max(x))
+    %     max_value = max(x);
+    % end
+
+    % if (min_value < min(x))
+    %     min_value = min(x);
+    % end
 
     % Contain signal between min max values
     for i = 1:signal_length
@@ -54,7 +63,11 @@ function [xq, centers, D] = mylloydmax(x, N, min_value, max_value)
         % Calculate new quantization quantized signal centers for each iteration
 
         for i = 1:length(centers)
-            centers(i) = mean(x((x >= T(i) & x <= T(i + 1))));
+            if (isnan(mean(x((x >= T(i) & x <= T(i + 1))))))
+                centers(i) = T(i+1);
+            else
+                centers(i) = mean(x((x >= T(i) & x <= T(i + 1))));
+            end
         end
 
         % Calculate quantized signal for each iteration
@@ -65,7 +78,11 @@ function [xq, centers, D] = mylloydmax(x, N, min_value, max_value)
         % Calculate signal distortion and check if it's infinitesimal
         D(k) = mean((x - centers(xq)).^2);
 
-        if abs(D(k) - D(k - 1)) < 1e-6
+        % Calculate SQNR (Signal quantization noise ratio)
+        sqnr(k) = mean(x.^2)/mean((x-centers(xq)).^2);
+        sqnr_db(k) = 10 * log10(sqnr(k));
+
+        if abs(D(k) - D(k - 1)) < 1e-16
             break;
         end
 
@@ -76,6 +93,8 @@ function [xq, centers, D] = mylloydmax(x, N, min_value, max_value)
 
     % Remove the arbitrary initial distortion value
     D = D(2:k);
+    sqnr = sqnr(2:k);
+    sqnr_db = sqnr_db(2:k);
 
     % Log the number of iterations
     disp(['Finished after ', num2str(length(D)), ' iterations.']);

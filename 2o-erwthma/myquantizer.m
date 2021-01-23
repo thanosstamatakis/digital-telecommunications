@@ -12,14 +12,14 @@ function [xq, centers] = myquantizer(x, N, min_val, max_val)
     centers = zeros(length(parts) - 1, 1);
     xq = zeros(length(parts) - 1, 1);
 
-    % If values exceeds max(x)/min(x) take it to max(x)/min(x) 
-    if (max_val > max(x))
-        max_val = max(x);
-    end
+    % % If values exceeds max(x)/min(x) take it to max(x)/min(x) 
+    % if (max_val > max(x))
+    %     max_val = max(x);
+    % end
 
-    if (min_val < min(x))
-        min_val = min(x);
-    end
+    % if (min_val < min(x))
+    %     min_val = min(x);
+    % end
 
     % Contain x to the [min_val,max_val] range
     for i = 1:length(x)
